@@ -111,7 +111,13 @@ Cách khắc phục (chọn 1 trong 3):
 
 ## Exit ticket
 
-Mỗi nhóm trả lời 2 câu:
+### 1. Case nào nên dùng multi-agent? Vì sao?
 
-1. Case nào nên dùng multi-agent? Vì sao?
-2. Case nào không nên dùng multi-agent? Vì sao?
+- **Bài toán phức tạp, nhiều công đoạn có chuyên môn hóa cao**: Ví dụ bài toán Deep Research, Code Generation & Audit, Legal Contract Review. Trong các trường hợp này, chia nhỏ công việc cho các agent chuyên biệt (Researcher tìm thông tin, Analyst đánh giá đối chiếu, Writer viết báo cáo, Critic kiểm định) giúp phân tách rõ ràng trách nhiệm (Separation of Concerns), giảm đáng kể hiện tượng hallucination và quá tải context window của 1 LLM call duy nhất.
+- **Yêu cầu kiểm chứng thông tin & quy trình có vòng lặp (Human-in-the-loop / Iterative refinement)**: Multi-agent cho phép Supervisor hoặc Critic tự động kiểm tra output của Worker agent và quyết định phản hồi/chạy lại bước đó nếu chưa đạt tiêu chuẩn về citation hoặc thông tin thiếu sót.
+
+### 2. Case nào không nên dùng multi-agent? Vì sao?
+
+- **Truy vấn đơn giản, yêu cầu độ trễ cực thấp (Low Latency Real-time Applications)**: Các tác vụ như Tra cứu FAQ, Tìm kiếm từ khóa, Tóm tắt văn bản ngắn. Sử dụng Multi-agent trong các trường hợp này chỉ tạo thêm overhead về mạng/latency (chạy qua nhiều node supervisor/worker làm tăng latency từ <1s lên vài giây) và chi phí API token cao hơn gấp nhiều lần mà không mang lại giá trị gia tăng tương xứng.
+- **Bài toán luồng tuyến tính 1 chiều không có phân nhánh phức tạp**: Khi một prompt duy nhất (Single-agent baseline hoặc Sequential Chain) đã giải quyết triệt để vấn đề mà không cần đến routing động hay tranh luận/đánh giá chéo giữa các agent.
+
